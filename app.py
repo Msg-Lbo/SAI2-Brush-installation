@@ -5,8 +5,6 @@ import psutil
 import py7zr
 from download import download_optimized
 
-time = "当前版本更新于：2023-9-20"
-
 
 # 判断程序是否运行
 def proc_exist(process_name):  # 判断程序是否在运行
@@ -54,7 +52,7 @@ def get_documents_folder():
 def main():
     # 示例数据
     env_var = get_documents_folder()
-    file_url = "https://pan.ylmty.cc/d/%E9%98%BF%E9%87%8C%E4%BA%91%E7%9B%98%F0%9F%94%91/SAI2/SYSTEMAX%20Software%20Development.7z"
+    file_url = "https://pan.ylmty.cc/d/115/SYSTEMAX%20Software%20Development.7z"
     file_name = env_var + "/SYSTEMAX Software Development.7z"
     perform_download_and_install(env_var, file_url, file_name)
 

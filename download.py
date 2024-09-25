@@ -1,3 +1,5 @@
+import os
+
 import requests
 from tqdm import tqdm
 
@@ -29,4 +31,14 @@ def download_optimized(url: str, fname: str):
         return True
     except requests.RequestException as e:
         print(f"下载失败，发生错误: {str(e)}")
+        os.system('pause')
+        return False
+    except KeyboardInterrupt:
+        print("下载已取消")
+        os.remove(fname)  # 删除已下载的文件
+        os.system('pause')
+        return False
+    except Exception as e:
+        print(f"下载失败，发生错误: {str(e)}")
+        os.system('pause')
         return False

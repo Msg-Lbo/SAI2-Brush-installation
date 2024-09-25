@@ -2,14 +2,12 @@ import ctypes
 import os
 import shutil
 import sys
-from ctypes import wintypes
-
 import psutil
 import py7zr
-
+from ctypes import wintypes
 from download import download_optimized
 
-time = "当前版本更新于：2023-8-18--v3.5.1"
+time = "当前版本更新于：2024-9-25--v3.5.4"
 
 
 # 判断程序是否运行
@@ -59,12 +57,13 @@ def print_initial_message():  # 打印提示信息
         "如不能打开，请在群里@群主\n\n"
         f"{repeated_message * 3}"  # 重复3次
         "----------\033[31m提示\033[0m----------"
+        "\n\n\n"
     )
 
 
 # 同意协议主函数
 def get_user_confirmation():  # 同意协议
-    is_ok = input("我已阅读以上提示(please input 'ok')：")
+    is_ok = input("我已阅读以上提示(请输入'ok'后按回车继续，ok是小写)：")
     if is_ok == "ok":
         return True
     else:
@@ -110,16 +109,25 @@ def extract_with_py7zr(file_path, extract_path):
 def perform_download_and_install(p_env_var, file_url, file_name):
     os.system("cls")
     print("正在准备下载...")
-    # 下载文件
-    if download_optimized(file_url, file_name):
-        # 解压缩文件
-        print("解压...")
-        unzip_path = os.path.join(p_env_var)
-        extract_with_py7zr(file_name, unzip_path)
-        print("笔刷安装完成")
-    else:
-        print("笔刷下载失败，请重试或联系管理员")
-    os.system('pause')
+    try:
+        # 下载文件
+        if download_optimized(file_url, file_name):
+            # 解压缩文件
+            print("解压...")
+            unzip_path = os.path.join(p_env_var)
+            extract_with_py7zr(file_name, unzip_path)
+            print("笔刷安装完成")
+        else:
+            print("笔刷下载失败，请重试或联系管理员")
+        os.system('pause')
+    except Exception as e:
+        print(f"解压失败，发生错误: {str(e)}\n请联系管理员..")
+        os.system('pause')
+    except KeyboardInterrupt:
+        print("解压失败，用户取消操作..")  # 删除下载的文件
+        os.remove(file_name)
+        os.system('pause')
+        return False
 
 
 def get_documents_folder():
@@ -135,7 +143,7 @@ def get_documents_folder():
 def main():
     # 示例数据
     env_var = get_documents_folder()
-    file_url = "https://pan.ylmty.cc/d/%E9%98%BF%E9%87%8C%E4%BA%91%E7%9B%98%F0%9F%94%91/SAI2/SYSTEMAX%20Software%20Development.7z"
+    file_url = "https://pan.ylmty.cc/d/115/SYSTEMAX%20Software%20Development.7z"
     file_name = env_var + "/SYSTEMAX Software Development.7z"
 
     print_initial_message()
@@ -165,4 +173,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"发生错误: {str(e)}\n请联系管理员..")
+        os.system('pause')
